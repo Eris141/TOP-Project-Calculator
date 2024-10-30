@@ -4,6 +4,7 @@ const numberButtons = document.querySelectorAll(".btn");
 const operatorButtons = document.querySelectorAll('.operator')
 const clearButton = document.querySelector(".clear-btn")
 const equalButton = document.querySelector(".equal-btn");
+const backspace = document.querySelector(".backspace");
 
 //Functions for the calculation
 function add(a, b) { return a + b; }
@@ -11,7 +12,7 @@ function subtract(a, b) { return a - b; }
 function multiply(a, b) { return a * b; }
 function divide(a, b) { 
   if (b === 0) {
-    console.log("Cant divide by 0")
+    return "Cant divide by 0";
   } else { return a / b; }
 }
 
@@ -30,7 +31,6 @@ function operator(firstNumber, operators, secondNumber) {
   switch(operators) {
     case "+":
       results = add(firstNumber, secondNumber);
-      console.log(results)
       break;
     case "-":
       results = subtract(firstNumber, secondNumber);
@@ -43,44 +43,86 @@ function operator(firstNumber, operators, secondNumber) {
       break;
   }
 
-  return results;
+   if (results === Number(results)) {
+    return Math.round(results * 10) / 10;
+   } else {
+    return results = "NO NO NO";
+   }
 }
-
 
 // Functions to popullate the display
 function handleNumbersDisplay(number) {
   if (displayValue.textContent.length > 9) {
     return;
   }
+
   //take the value from number
   let input = number.target.innerText;
-  //add it to the display\
-  if (displayValue.textContent === "0") {
-    displayValue.textContent = input;
+
+ //add it to the display\
+  if (displayValue.textContent === "0" || firstNumber === "NO NO NO") {
+     displayValue.textContent = input;
+    if (input === ".") {
+      displayValue.textContent = "0";
+      displayValue.textContent += input;
+    }
   } else {
-    displayValue.textContent += input;
-  }
+    //fix the decimal
+    if (input === ".") {
+      if (displayValue.textContent.includes(input) && input.includes(input)) return;
+    }
+      displayValue.textContent += input;
+  } 
   
+  if (firstNumber === "NO NO NO") {
+    displayValue.textContent = input;
+    if (input === ".") {
+      displayValue.textContent = "0";
+      displayValue.textContent += input;
+    }
+  }
+
+  // Get first number and second num values
   if (operators === null) {
-    firstNumber  = displayValue.textContent;
+
+    firstNumber = displayValue.textContent;
   } else {
     displayValue.textContent = input;
     secondNumber += displayValue.textContent;
+    displayValue.textContent = secondNumber;
+    //fix the decimal
+    if (secondNumber === "0") {
+      secondNumber = input;
+      if (input === ".") {
+        secondNumber = "0";
+        secondNumber += input;
+      }
+    }
   }
+
   console.log('first',firstNumber);
   console.log('second', secondNumber);
-
-
 }
 
-function handleOperatorsDisplay(operator) {
-  if (operators === null) {
-    const operatorInput = operator.target.innerText;
-    displayValue.textContent += operatorInput;
-    operators = displayValue.textContent;
-  } else {
+
+function handleOperatorsDisplay(op) {
+  // Prevent puting operator at the begining
+  if (firstNumber !== "0" && operators === null && displayValue.textContent === "0") {
     return;
   }
+
+  
+  if (operators === null) {
+    if (firstNumber === "NO NO NO") {
+      return;
+    }
+    const operatorInput = op.target.innerText;
+    displayValue.textContent = operatorInput;
+    operators = operatorInput;
+    displayValue.textContent = operators;
+  } else {
+  } 
+
 }
 
 
@@ -101,14 +143,20 @@ function clearDisplay() {
 
 clearButton.addEventListener('click', clearDisplay);
 
+function deleteOneKey() {
+
+}
+
 // Get the result of the numbers
 function getResult() {
   if (firstNumber, operators, secondNumber) {
-    let result = operator(firstNumber, operator, secondNumber);
+    let result = operator(firstNumber, operators, secondNumber);
     displayValue.textContent = result;
-    firstNumber = displayValue;
+    firstNumber = displayValue.textContent;
     secondNumber = "";
     operators = null;
+    console.log(result);
+    console.log(displayValue.textContent);
   }
 }
 
