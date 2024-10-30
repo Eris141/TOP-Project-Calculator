@@ -15,6 +15,7 @@ function divide(a, b) {
     return "Cant divide by 0";
   } else { return a / b; }
 }
+function remaining(a, b) {return a % b};
 
 let firstNumber = "";
 let secondNumber = "";
@@ -40,6 +41,9 @@ function operator(firstNumber, operators, secondNumber) {
     case "/":
       results = divide(firstNumber, secondNumber);
       break;
+    case "%":
+      results = remaining(firstNumber, secondNumber);
+      break
   }
 
    if (results === Number(results)) {
