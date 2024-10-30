@@ -21,7 +21,6 @@ let secondNumber = "";
 let operators = null;
 displayValue.textContent = "0";
 
-
 // Calculator operator
 function operator(firstNumber, operators, secondNumber) {
   let results;
@@ -84,20 +83,16 @@ function handleNumbersDisplay(number) {
 
   // Get first number and second num values
   if (operators === null) {
-
     firstNumber = displayValue.textContent;
+
   } else {
     displayValue.textContent = input;
+    // fix the decimal
+    if (displayValue.textContent === "0") {
+      displayValue.textContent = input;
+    }
     secondNumber += displayValue.textContent;
     displayValue.textContent = secondNumber;
-    //fix the decimal
-    if (secondNumber === "0") {
-      secondNumber = input;
-      if (input === ".") {
-        secondNumber = "0";
-        secondNumber += input;
-      }
-    }
   }
 
   console.log('first',firstNumber);
@@ -121,6 +116,15 @@ function handleOperatorsDisplay(op) {
     operators = operatorInput;
     displayValue.textContent = operators;
   } else {
+    if (firstNumber, operators, secondNumber) {
+      let result = operator(firstNumber, operators, secondNumber);
+      displayValue.textContent = result;
+      firstNumber = displayValue.textContent;
+      secondNumber = "";
+      operators = null;
+      console.log(result);
+      console.log(displayValue.textContent);
+    }
   } 
 
 }
@@ -144,7 +148,14 @@ function clearDisplay() {
 clearButton.addEventListener('click', clearDisplay);
 
 function deleteOneKey() {
+  displayValue.textContent = displayValue
+  .textContent.length === 1 ? 0 : displayValue.textContent.substring(0, displayValue.textContent.length - 1)
 
+  // update first and second number
+  firstNumber = displayValue.textContent;
+  if (operators !== null) {
+    secondNumber = displayValue.textContent
+  }
 }
 
 // Get the result of the numbers
@@ -161,3 +172,5 @@ function getResult() {
 }
 
 equalButton.addEventListener('click', getResult);
+
+backspace.addEventListener('click', deleteOneKey);
